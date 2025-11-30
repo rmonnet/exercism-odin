@@ -158,10 +158,10 @@
       {
         "slug": "robot-simulator",
         "name": "Robot Simulator",
-         "uuid": "e03b34a7-596c-49c9-8ebb-5b0d6d338012",
-         "practices": [],
-         "prerequisites": [],
-         "difficulty": 2
+        "uuid": "e03b34a7-596c-49c9-8ebb-5b0d6d338012",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 2
       },
       {
         "slug": "triangle",
