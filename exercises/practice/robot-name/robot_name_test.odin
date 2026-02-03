@@ -92,7 +92,7 @@ test_no_name_collisions :: proc(t: ^testing.T) {
 		digit3 := uint(name[2] - '0')
 		digit2 := uint(name[3] - '0')
 		digit1 := uint(name[4] - '0')
-		return digit1 + 10 * (digit2 + 10 * (digit3 + 10 * (digit4 + 26 * digit5)))
+		return digit5 * 26000 + digit4 * 1000 + digit3 * 100 + digit2 * 10 + digit1
 	}
 
 	storage := make_storage()
