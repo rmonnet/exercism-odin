@@ -10,10 +10,13 @@ Robot :: struct {
 }
 
 Error :: enum {
+	None,
 	Could_Not_Create_Name,
 	Unimplemented,
 }
 
+// In this exercise, it is the responsibility of Robot_Storage
+// to manage the Robot names (strings).
 make_storage :: proc() -> Robot_Storage {
 	// Implement this procedure.
 	return Robot_Storage{}

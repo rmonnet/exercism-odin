@@ -18,8 +18,8 @@ test_name_is_valid :: proc(t: ^testing.T) {
 	storage := make_storage()
 	defer delete_storage(&storage)
 	r, e := new_robot(&storage)
-	testing.expect(t, e == nil)
-	testing.expect(t, name_valid(r.name))
+	testing.expect_value(t, Error.None, e)
+	testing.expectf(t, name_valid(r.name), "Robot name is invalid: '%s'", r.name)
 }
 
 @(test)
@@ -27,11 +27,17 @@ test_name_is_valid :: proc(t: ^testing.T) {
 test_successive_robots_have_different_names :: proc(t: ^testing.T) {
 	storage := make_storage()
 	defer delete_storage(&storage)
-	n1, e1 := new_robot(&storage)
-	n2, e2 := new_robot(&storage)
-	testing.expect(t, e1 == nil)
-	testing.expect(t, e2 == nil)
-	testing.expect(t, n1 != n2)
+	r1, e1 := new_robot(&storage)
+	r2, e2 := new_robot(&storage)
+	testing.expect_value(t, Error.None, e1)
+	testing.expect_value(t, Error.None, e2)
+	testing.expectf(
+		t,
+		r1.name != r2.name,
+		"Successive robots have same name: '%s' and '%s'",
+		r1.name,
+		r2.name,
+	)
 }
 
 @(test)
@@ -40,78 +46,70 @@ test_reset_name :: proc(t: ^testing.T) {
 	storage := make_storage()
 	defer delete_storage(&storage)
 	r, e := new_robot(&storage)
-	n1 := r.name
+	n1 := strings.clone(r.name)
+	defer delete(n1)
 	reset(&storage, &r)
 	n2 := r.name
-	testing.expect(t, e == nil)
-	testing.expect(t, n1 != n2)
+	testing.expect_value(t, Error.None, e)
+	testing.expectf(
+		t,
+		n1 != n2,
+		"Expected robot to have different name after reset but got '%s' and '%s'",
+		n1,
+		n2,
+	)
 }
 
 @(test)
 /// description = Multiple names
 test_multiple_names :: proc(t: ^testing.T) {
-	n := 100
+	n := 1000
 	storage := make_storage()
 	defer delete_storage(&storage)
 	seen := make(map[string]bool)
 	defer delete(seen)
-	for i := 0; i <= n; i += 1 {
+	for _ in 0 ..< n {
 		r, e := new_robot(&storage)
-		testing.expect(t, e == nil)
-		testing.expect(t, !seen[r.name])
+		testing.expect_value(t, Error.None, e)
+		testing.expectf(t, !seen[r.name], "Seen two robots with the same name: '%s'", r.name)
+		if seen[r.name] { break }
 		seen[r.name] = true
 	}
 }
 
-// TODO: find a good way to solve this without assuming Robot_Storage will contains `names`
-// this code will not compile if user decide to use other name than `names` on Robot_Storage
-dfs_fill_names :: proc(storage: ^Robot_Storage) {
-	GO_BACK_SENTINEL := u8('-')
-	NAME_LENGTH := 5
-	LETTERS := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	NUMBERS := "0123456789"
-	stack := make([dynamic]u8)
-	defer delete(stack)
-	current := make([]u8, NAME_LENGTH)
-	defer delete(current)
-	for i in 0 ..< len(LETTERS) {
-		append(&stack, LETTERS[i])
-	}
-	depth := 0
-	for len(stack) > 0 {
-		ch := pop(&stack)
-		go_back := ch == GO_BACK_SENTINEL
-		if go_back {
-			depth -= 1
-			continue
-		}
-		current[depth] = ch
-		depth += 1
-		if depth == NAME_LENGTH {
-			key := string(current)
-			storage.names[strings.clone(key)] = true
-			depth -= 1
-			continue
-		}
-		append(&stack, GO_BACK_SENTINEL)
-		if depth < 2 {
-			for i in 0 ..< len(LETTERS) {
-				append(&stack, LETTERS[i])
-			}
-		} else {
-			for i in 0 ..< len(NUMBERS) {
-				append(&stack, NUMBERS[i])
-			}
-		}
-	}
-}
-
-@(test)
+// The following test is commented out because solutions that are not particularly fast can exceed testing time limits.
+// If you are testing from the command line, you can uncomment it out to check if your solution covers the entire name set.
+// @(test)
 /// description = No name collisions
 test_no_name_collisions :: proc(t: ^testing.T) {
+
+	robot_name_to_id :: proc(name: string) -> uint {
+
+		if len(name) != 5 { return 0 }
+
+		digit5 := uint(name[0] - 'A')
+		digit4 := uint(name[1] - 'A')
+		digit3 := uint(name[2] - '0')
+		digit2 := uint(name[3] - '0')
+		digit1 := uint(name[4] - '0')
+		return digit5 * 26000 + digit4 * 1000 + digit3 * 100 + digit2 * 10 + digit1
+	}
+
 	storage := make_storage()
 	defer delete_storage(&storage)
-	dfs_fill_names(&storage)
+	// Create enough robots to use all the names
+	N :: 26 * 26 * 10 * 10 * 10
+	seen := make([]bool, N)
+	defer delete(seen)
+	for _ in 0 ..< N {
+		r, e := new_robot(&storage)
+		testing.expect_value(t, Error.None, e)
+		id := robot_name_to_id(r.name)
+		testing.expectf(t, !seen[id], "Seen two robots with the same name: '%s'", r.name)
+		if seen[id] { break }
+		seen[id] = true
+	}
+	// Now we shouldn't be able to create any new robot since we ran out of names.
 	_, e := new_robot(&storage)
 	testing.expect_value(t, e, Error.Could_Not_Create_Name)
 }
