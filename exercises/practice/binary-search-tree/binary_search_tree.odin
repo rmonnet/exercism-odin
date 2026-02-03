@@ -1,22 +1,20 @@
 package binary_search_tree
 
-Binary_Search_Tree :: struct {}
+Tree :: ^Node
 
-bst_make :: proc() -> Binary_Search_Tree {
-	// Implement this procedure.
-	return Binary_Search_Tree
+Node :: struct {
+	// Implement the Node data structure.
 }
 
-bst_destroy :: proc(bst: ^Binary_Search_Tree) {
-	// Implement this procedure
+destroy_tree :: proc(t: Tree) {
+	// Implement this procedure.
 }
 
-data :: proc() -> string {
+insert :: proc(t: ^Tree, value: int) {
 	// Implement this procedure.
-	return ""
 }
 
-sorted_data :: proc() -> string {
+sorted_data :: proc(t: Tree) -> []int {
 	// Implement this procedure.
-	return ""
+	return nil
 }
