@@ -1,7 +1,5 @@
 package binary_search_tree
 
-import "core:fmt"
-
 Tree :: ^Node
 
 Node :: struct {
@@ -47,20 +45,4 @@ collect_data :: proc(t: Tree, acc: ^[dynamic]int) {
 	collect_data(t.left, acc)
 	append(acc, t.value)
 	collect_data(t.right, acc)
-}
-
-main :: proc() {
-
-	data := [?]int{4, 2}
-	input: Tree
-	for v in data[:] {
-		insert(&input, v)
-	}
-	result := sorted_data(input)
-	defer {
-		destroy_tree(input)
-		delete(result)
-	}
-	fmt.printf("%#v\n", input)
-	fmt.println(result)
 }
