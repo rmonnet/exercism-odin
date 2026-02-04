@@ -3,7 +3,9 @@ package binary_search_tree
 Tree :: ^Node
 
 Node :: struct {
-	// Implement the Node data structure.
+	value: int,
+	left:  Tree,
+	right: Tree,
 }
 
 destroy_tree :: proc(t: Tree) {
