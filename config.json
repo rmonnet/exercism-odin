@@ -18,18 +18,10 @@
     "average_run_time": 2
   },
   "files": {
-    "solution": [
-      "%{snake_slug}.odin"
-    ],
-    "test": [
-      "%{snake_slug}_test.odin"
-    ],
-    "example": [
-      ".meta/example.odin"
-    ],
-    "exemplar": [
-      ".meta/exemplar.odin"
-    ]
+    "solution": ["%{snake_slug}.odin"],
+    "test": ["%{snake_slug}_test.odin"],
+    "example": [".meta/example.odin"],
+    "exemplar": [".meta/exemplar.odin"]
   },
   "exercises": {
     "practice": [
@@ -546,14 +538,6 @@
         "difficulty": 5
       },
       {
-        "slug": "zipper",
-        "name": "Zipper",
-        "uuid": "88f207d3-997c-4497-9a7a-9d112d1aa4cd",
-        "practices": [],
-        "prerequisites": [],
-        "difficulty": 5
-      },
-      {
         "slug": "bowling",
         "name": "Bowling",
         "uuid": "85bedaa1-0898-4698-bf14-0a67ef9b7668",
@@ -581,6 +565,14 @@
         "slug": "zebra-puzzle",
         "name": "Zebra Puzzle",
         "uuid": "46c4a1a8-6725-466e-9eb2-a4541dc709f2",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 9
+      },
+      {
+        "slug": "zipper",
+        "name": "Zipper",
+        "uuid": "88f207d3-997c-4497-9a7a-9d112d1aa4cd",
         "practices": [],
         "prerequisites": [],
         "difficulty": 9
