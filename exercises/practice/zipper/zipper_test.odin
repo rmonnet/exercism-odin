@@ -268,13 +268,6 @@ test_set_right_with_subtree :: proc(t: ^testing.T) {
 @(test)
 /// description = set_value on deep focus
 test_set_value_on_deep_focus :: proc(t: ^testing.T) {
-	// {"operation":"left"},
-	// {"operation":"right"},
-	// {"operation":"set_value","item":5},
-	// {"operation":"to_tree"}]}`
-	// result := expected_value(input)
-	// expected := {
-	// {1,l:{2,r:{5}},r:{4}}}
 
 	ctx_allocator := context.allocator
 	context.allocator = context.temp_allocator
@@ -297,12 +290,6 @@ test_set_value_on_deep_focus :: proc(t: ^testing.T) {
 @(test)
 /// description = different paths to same zipper
 test_different_paths_to_same_zipper :: proc(t: ^testing.T) {
-	// {"operation":"left"},
-	// {"operation":"up"},
-	// {"operation":"right"}]}`
-	// result := same_result_from_operations(input)
-	// expected := {{1,l:{2,,r:{3}},r:{4,}},
-	// "operations":[{"operation":"right"}]}
 
 	ctx_allocator := context.allocator
 	context.allocator = context.temp_allocator
